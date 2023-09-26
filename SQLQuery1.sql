@@ -115,26 +115,6 @@ Join CovidVaccinations vac
 where dea.continent is not null
 order by 1,2
 
---With MaxPopVac AS(
---Select dea.location, dea.date, dea.population, vac.new_vaccinations,
---SUM(CONVERT(numeric,vac.new_vaccinations)) OVER (Partition by dea.Location Order By dea.location,dea.date) as RollingPeopleVaccinated,
---ROW_NUMBER() OVER(Partition by dea.location Order By SUM(CONVERT(numeric,vac.new_vaccinations))) as RowNum
-----, (RollingPeopleVaccinated/population)*100
---From CovidDeaths dea
---Join CovidVaccinations vac
---	On dea.location = vac.location
---	and dea.date = vac.date
---where dea.continent is not null
---Group By  dea.location, dea.date, dea.population, vac.new_vaccinations
-----Order By 1,2
-----order by 1,2
---)
---Select *,Max(RollingPeopleVaccinated/population*100) Over(Order By location DESC) as RowMax
---From MaxPopVac
---WHERE RowNum = 1
---Order By RowMax DESC
-
-
 ;With MaxPopVac AS(
 Select dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CONVERT(numeric,vac.new_vaccinations)) OVER (Partition by dea.Location) as RollingPeopleVaccinated
